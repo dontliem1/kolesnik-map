@@ -1,33 +1,64 @@
 media: public/img
 content:
-  - name: posts
-    label: Posts
+  - name: projects
+    label: Проекты
     type: collection
-    path: content/blog
+    path: content/projects
+    filename: "{{ fields.title }}"
+    subfolders: false
     view:
-      fields: [ title, draft, date ]
+      fields: [title, draft, status]
     fields:
-      - { name: title, label: Title, type: string, required: true }
-      - { name: description, label: Description, type: string }
-      - { name: date, label: Date, type: date }
-      - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true }
-      - { name: body, label: Body, type: rich-text }
-  - name: about
-    label: About page
-    type: file
-    path: content/about/index.md
-    fields:
-      - { name: layout, type: string, hidden: true, default: layouts/base.njk }
-      - name: eleventyNavigation
-        label: Navigation
-        type: object
-        fields:
-          - { name: key, label: Key, type: string }
-          - { name: order, label: Order, type: number }
-      - { name: body, label: Body, type: rich-text }
-  - name: metadata
-    label: Metadata
-    type: file
-    path: _data/metadata.js
-    format: code
+      - name: title
+        label: Заголовок
+        type: string
+        required: true
+        description: "Например: Водопроводная, 14"
+      - name: title
+        label: Транслитерация для ссылки
+        type: string
+        required: true
+        description: "Например: vodoprovodnaya-14"
+      - name: string
+        label: Ссылка
+        type: string
+        description: "Например: https://ddkolesnik.com/projects/vodoprovodnaya-14"
+      - name: is_big
+        label: Большая иконка
+        type: boolean
+      - name: cover
+        label: Обложка
+        type: image
+      - name: draft
+        label: Черновик
+        type: boolean
+      - name: latitude
+        label: Широта
+        type: number
+        step: 0.000001
+        options:
+          min: -180
+          max: 180
+      - name: longitude
+        label: Долгота
+        type: number
+        step: 0.000001
+        options:
+          min: -180
+          max: 180
+      - name: status
+        label: Статус
+        type: select
+        options:
+          values:
+            - value: done
+              label: Завершён
+            - value: in_progress
+              label: В работе
+            - value: invest
+              label: Для инвестиций
+      - name: body
+        label: Описание
+        type: rich-text
+        options:
+          media: false

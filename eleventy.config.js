@@ -71,17 +71,14 @@ export default async function(eleventyConfig) {
 			}
 		},
 		collection: {
-			name: "posts",
+			name: "projects",
 			limit: 10,
 		},
 		metadata: {
-			language: "en",
-			title: "Blog Title",
-			subtitle: "This is a longer description about your blog.",
-			base: "https://example.com/",
-			author: {
-				name: "Your Name"
-			}
+			language: "ru",
+			title: "Проекты компании Колесник",
+			subtitle: "Карта с описанием и ссылками на проекты компании Колесник",
+			base: "https://ddkolesnik.com/",
 		}
 	});
 

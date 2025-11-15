@@ -54,10 +54,10 @@ body {
 	background-color: var(--background-color);
 }
 html {
-	overflow-y: scroll;
+	height: 100%;
 }
 body {
-	max-width: 40em;
+	height: 100%;
 }
 
 /* https://www.a11yproject.com/posts/how-to-hide-content/ */
@@ -296,3 +296,23 @@ header {
 	margin-right: 1em;
 }
 
+/** MARK: YMap */
+.ymaps3--default-marker__background {
+	position: relative;
+}
+
+.ymaps3--default-marker__background::before {
+	position: absolute;
+	content: '';
+	pointer-events: none;
+	inset: 0;
+	background: url('/img/k.svg') 50% 30% / 50% no-repeat;
+}
+
+.ymaps3--small-poi .ymaps3--default-marker__background::before {
+	background-position: center;
+}
+
+.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]::before {
+	background-image: url('/img/k--black.svg');
+}

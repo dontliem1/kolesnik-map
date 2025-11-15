@@ -1,0 +1,10 @@
+---
+layout: layouts/base.njk
+---
+<h1 class="visually-hidden">{{ title }}</h1>
+<script type="module">
+	import {createProjectMap} from '/lib/ymaps.js'
+
+	const map = createProjectMap('{{ longitude }}', '{{ latitude }}', '{{ title }}');
+	console.log(map);
+</script>
