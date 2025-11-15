@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="pretty-atom-feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ru">
+  <title>Проекты компании Колесник</title>
+  <subtitle>Карта с описанием и ссылками на проекты компании Колесник</subtitle>
+  <link href="https://ddkolesnik.com/kolesnik-map/feed/feed.xml" rel="self" />
+  <link href="https://ddkolesnik.com/kolesnik-map/" />
+  <updated>2018-05-01T00:00:00Z</updated>
+  <id>https://ddkolesnik.com/kolesnik-map/</id>
+  <author>
+    <name>Your Name</name>
+  </author>
+  <entry>
+    <title>Водопроводная, 14</title>
+    <link href="https://ddkolesnik.com/kolesnik-map/projects/vodoprovodnaya-14/" />
+    <updated>2018-05-01T00:00:00Z</updated>
+    <id>https://ddkolesnik.com/kolesnik-map/projects/vodoprovodnaya-14/</id>
+    <content type="html">&lt;p&gt;Современный крафтовый кластер с заведениями моноеды, баром и лаунджем с террассой. Бесконечно стильное и интересное здание — одно из самых примечательных в центре города. На заднем дворе —  мы установили арт-объект «Красный Конь» работы современного уличного художника Дмитрия Аске. В открытии крафтового кластера «Конюшня» и арт-объекта приняли участие представители администрации города,  центральной управы города Тюмени. Больше 30 публикаций в СМИ сделали отличную рекламу и арт-объекту и всему кластеру.&lt;/p&gt;
+</content>
+  </entry>
+</feed>
