@@ -1,0 +1,49 @@
+/* Defaults */
+:root {
+	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+}
+
+@view-transition {
+	navigation: auto;
+}
+
+html {
+	height: 100%;
+}
+body {
+	margin: 0;
+	height: 100%;
+}
+
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden:not(:focus):not(:active) {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/** MARK: YMap */
+.ymaps3--default-marker__background {
+	position: relative;
+}
+
+.ymaps3--default-marker__background::before {
+	position: absolute;
+	content: '';
+	pointer-events: none;
+	inset: 0;
+	background: url('../img/k.svg') 50% 30% / 50% no-repeat;
+}
+
+.ymaps3--small-poi .ymaps3--default-marker__background::before {
+	background-position: center;
+}
+
+.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]::before {
+	background-image: url('../img/k--black.svg');
+}
