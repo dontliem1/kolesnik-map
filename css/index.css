@@ -1,7 +1,8 @@
-/* Defaults */
-:root {
-	--font-family: -apple-system, system-ui, sans-serif;
-	--font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+@font-face {
+    font-family: 'GT America';
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/GT-America-LC-Compressed-Bold.otf') format("opentype");
 }
 
 @view-transition {
@@ -11,7 +12,9 @@
 html {
 	height: 100%;
 }
+
 body {
+	font-family: -apple-system, system-ui, sans-serif;
 	margin: 0;
 	height: 100%;
 }
@@ -28,6 +31,10 @@ body {
 }
 
 /** MARK: YMap */
+ymaps {
+	touch-action: manipulation;
+}
+
 .ymaps3--default-marker__background {
 	position: relative;
 }
@@ -46,4 +53,13 @@ body {
 
 .ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]::before {
 	background-image: url('../img/k--black.svg');
+}
+
+ymaps .ymaps3--hint-title {
+	font-family: 'GT America', sans-serif;
+    color: #262626;
+    font-size: 130%;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
 }

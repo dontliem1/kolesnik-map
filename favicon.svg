@@ -1,0 +1,10 @@
+<svg width="500" height="558" viewBox="0 0 500 558" fill="#262626" id="favicon" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      #favicon {
+        fill: #FAF9F9;
+      }
+    }
+  </style>
+<path d="M500 557.925H0V0H500C500 208.494 360.519 278.962 360.519 278.962C360.519 278.962 500 349.159 500 557.925Z" />
+</svg>
