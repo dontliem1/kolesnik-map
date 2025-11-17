@@ -1,7 +1,7 @@
 ---
 title: Водопроводная, 14
 date: 2018-05-01
-tags: done
+status: done
 url: https://ddkolesnik.com/vodoprovodnaya-14
 is_big: true
 cover: https://malikovnikita.com/wp-content/uploads/1-9.jpg

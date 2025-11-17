@@ -5,6 +5,10 @@ layout: layouts/base.njk
 <script type="module">
 	import {createProjectMap} from '{{ "/lib/ymaps.js" | htmlBaseUrl }}'
 
-	const map = createProjectMap('{{ longitude }}', '{{ latitude }}', '{{ title }}');
-	console.log(map);
+	createProjectMap({
+		longitude: '{{ longitude }}',
+		latitude: '{{ latitude }}',
+		status: '{{ status }}',
+		title: '{{ title }}',
+	});
 </script>

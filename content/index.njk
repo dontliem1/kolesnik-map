@@ -1,29 +1,26 @@
----js
-const eleventyNavigation = {
-	key: "Home",
-	order: 1
-};
-
-const numberOfLatestPostsToShow = 3;
 ---
-{% set postsCount = collections.projects | length %}
-{% set latestPostsCount = postsCount | min(numberOfLatestPostsToShow) %}
-<h1>Latest {{ latestPostsCount }} Post{% if latestPostsCount != 1 %}s{% endif %}</h1>
+title: 'Карта объектов компании Колесник'
+---
+<h1 class="visually-hidden">{{ title }}</h1>
+<script type="module">
+	import {createCityMap} from '{{ "/lib/ymaps.js" | htmlBaseUrl }}'
 
-{% set postslist = collections.projects | head(-1 * numberOfLatestPostsToShow) %}
-{% set postslistCounter = postsCount %}
-{% include "postslist.njk" %}
-
-{% set morePosts = postsCount - numberOfLatestPostsToShow %}
-{% if morePosts > 0 %}
-<p>{{ morePosts }} more post{% if morePosts != 1 %}s{% endif %} can be found in <a href="projects.njk">the archive</a>.</p>
-{% endif %}
-
-{# List every content page in the project #}
-{#
-<ul>
-	{%- for entry in collections.all %}
-	<li><a href="{{ entry.url }}"><code>{{ entry.url }}</code></a></li>
-	{%- endfor %}
-</ul>
-#}
+	createCityMap({
+		features: [
+			{%- for project in collections.projects %}
+				{
+					id: '{{ project.data.title }}',
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: [{{ project.data.longitude }}, {{ project.data.latitude }}],
+					},
+					properties: {
+						status: '{{ project.data.status }}',
+						size: '{{ "normal" if project.data.is_big else "small" }}',
+					},
+				},
+			{%- endfor %}
+		],
+	});
+</script>

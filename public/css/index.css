@@ -63,3 +63,44 @@ ymaps .ymaps3--hint-title {
     line-height: 1;
     text-transform: uppercase;
 }
+
+.ymaps3--small-poi svg {
+	transform: scale(1.5);
+}
+
+.ymaps3--small-poi .ymaps3--default-marker__background::before {
+	background-size: 75%;
+	z-index: 1;
+}
+
+.marker-cluster {
+    align-items: center;
+    background-color: #262626;
+	border-radius: 2em;
+	border: none;
+    color: #FAF9F9;
+	cursor: pointer;
+    display: flex;
+    font-family: 'GT America', sans-serif;
+    font-size: 180%;
+	height: 1.25em;
+    justify-content: center;
+    text-align: center;
+	transform: translate(-50%, -50%);
+	width: 1.25em;
+}
+
+.marker-cluster--done {
+    background-color: #262626;
+    color: #FAF9F9;
+}
+
+.marker-cluster--in_progress {
+    background-color: #9b7863;
+    color: #FAF9F9;
+}
+
+.marker-cluster--invest {
+    background-color: #FAF9F9;
+    color: #262626;
+}

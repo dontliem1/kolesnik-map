@@ -6637,13 +6637,53 @@ const GRAY_SKIN = new YMapDefaultSchemeLayer({
     ]
 });
 
-function createProjectMap(longitude, latitude, title) {
+const ZOOM_CONTROL = new YMapControls({position: 'right'}).addChild(new YMapZoomControl({}));
+
+/** @type {import("@yandex/ymaps3-types").BehaviorType[]} */
+const behaviors = ["drag", "pinchZoom", "dblClick", "magnifier", "oneFingerZoom", "mouseRotate", "mouseTilt", "pinchRotate", "panTilt"];
+
+/** @param {'done' | 'in_progress' | 'invest' | undefined} status */
+function statusToColor(status) {
+    switch (status) {
+        case 'done':
+            return '#262626';
+        case 'in_progress':
+            return '#9b7863';
+        default:
+            return 'rgb(250, 249, 249)';
+    }
+}
+
+/**
+ * @param {{ longitude: number, latitude: number, title?: string, status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps }} params
+ */
+function createDefaultMarker({longitude, latitude, title, status, size}) {
+    /** @type {import("@yandex/ymaps3-types").LngLat} */
+    const center = [longitude, latitude];
+    const color = statusToColor(status);
+
+    return new YMapDefaultMarker(
+        {
+            color: {day: color, night: color},
+            coordinates: center,
+            size: size ?? 'normal',
+            staticHint: false,
+            title,
+        },
+    )
+}
+
+/**
+ * @param {{ longitude: number, latitude: number, title: string, status: 'done' | 'in_progress' | 'invest' }} params
+ */
+function createProjectMap({longitude, latitude, title, status}) {
+    /** @type {import("@yandex/ymaps3-types").LngLat} */
     const center = [longitude, latitude];
 
     return new YMap(
         document.body,
         {
-            behaviors: ["drag", "pinchZoom", "dblClick", "magnifier", "oneFingerZoom", "mouseRotate", "mouseTilt", "pinchRotate", "panTilt"],
+            behaviors,
             className: 'project-map',
             location: {center, zoom: 15},
             worldOptions: {cycledX: false, cycledY: false},
@@ -6651,32 +6691,109 @@ function createProjectMap(longitude, latitude, title) {
         },
         [
             GRAY_SKIN,
-            new YMapControls({position: 'right'}).addChild(new YMapZoomControl({})),
-            new YMapDefaultFeaturesLayer(),
-            new YMapDefaultMarker(
-                {
-                    color: {day: 'rgb(250, 249, 249)', night: 'rgb(250, 249, 249)'},
-                    coordinates: center,
-                    size: 'normal',
-                    staticHint: false,
-                    title,
-                },
-            )
+            ZOOM_CONTROL,
+            new YMapDefaultFeaturesLayer({visible: true}),
+            createDefaultMarker({longitude, latitude, title, status}),
         ]
     );
 }
 
+function circle(count, status) {
+    const circle = document.createElement('div');
+    circle.classList.add('marker-cluster', `marker-cluster--${status}`);
+    circle.innerText = count;
+    return circle;
+}
+
+/**
+ * @param {import("@yandex/ymaps3-types").LngLat[]} coordinates
+ * @returns {import("@yandex/ymaps3-types").LngLatBounds}
+ */
+function getBounds(coordinates) {
+    let minLat = Infinity,
+        minLng = Infinity;
+    let maxLat = -Infinity,
+        maxLng = -Infinity;
+
+    for (const coords of coordinates) {
+        const lat = coords[1];
+        const lng = coords[0];
+
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+    }
+
+    return [
+        [minLng, minLat],
+        [maxLng, maxLat]
+    ];
+}
+
+function addClusterer(map, status, features) {
+    return map.addChild(new YMapClusterer({
+        method: clusterByGrid({gridSize: 128}),
+        features,
+        marker: (/** @type {import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps } }} */ feature) => createDefaultMarker({
+            longitude: feature.geometry.coordinates[0],
+            latitude: feature.geometry.coordinates[1],
+            title: feature.id,
+            status: feature.properties?.status,
+            size: feature.properties?.size,
+        }),
+        cluster: (coordinates, features) =>
+            new YMapMarker(
+                {
+                    coordinates,
+                    onClick() {
+                        const bounds = getBounds(features.map((feature) => feature.geometry.coordinates));
+                        map.update({location: {bounds}});
+                    }
+                },
+                // @ts-ignore
+                circle(features.length, status).cloneNode(true)
+            ),
+    }));
+}
+
+/**
+ * @param {{ longitude?: number, latitude?: number, zoom?: number, features: import("@yandex/ymaps3-clusterer").Feature[] }} params
+ */
+function createCityMap({longitude, latitude, zoom, features}) {
+    /** @type {import("@yandex/ymaps3-types").LngLat} */
+    const center = [longitude ?? 65.567697, latitude ?? 57.143386];
+
+    const map = new YMap(
+        document.body,
+        {
+            behaviors,
+            className: 'city-map',
+            location: {center, zoom: zoom ?? 13},
+            worldOptions: {cycledX: false, cycledY: false},
+            zoomRange: {min: 5, max: 21},
+        },
+        [
+            GRAY_SKIN,
+            ZOOM_CONTROL,
+            new YMapDefaultFeaturesLayer({visible: true}),
+        ]
+    );
+
+    const groupedFeatures = features.reduce(function groupByStatus(/** @type {Record<'done' | 'in_progress' | 'invest', (import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest' } })[]>} */ acc, /** @type {import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest' } }} */ feature) {
+        acc[feature.properties?.status ?? 'invest'].push(feature);
+
+        return acc;
+    }, {done: [], in_progress: [], invest: []});
+
+    for (const status in groupedFeatures) {
+        addClusterer(map, status, groupedFeatures[status]);
+    }
+
+    return map;
+}
+
 export {
-    YMap,
-    YMapDefaultSchemeLayer,
-    YMapControls,
-    YMapMarker,
-    YMapZoomControl,
-    YMapDefaultMarker,
-    YMapClusterer,
-    clusterByGrid,
-    YMapDefaultFeaturesLayer,
-    YMapPopupMarker,
-    GRAY_SKIN,
     createProjectMap,
+    createCityMap,
 };
