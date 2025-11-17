@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'GT America';
-    font-weight: 700;
-    font-display: swap;
-    src: url('../fonts/GT-America-LC-Compressed-Bold.otf') format("opentype");
+	font-family: 'GT America';
+	font-weight: 700;
+	font-display: swap;
+	src: url('../fonts/GT-America-LC-Compressed-Bold.otf') format("opentype");
 }
 
 @view-transition {
@@ -10,6 +10,7 @@
 }
 
 html {
+	accent-color: #9b7863;
 	height: 100%;
 }
 
@@ -28,6 +29,55 @@ body {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+/** MARK: Map statuses */
+.ymaps3--drawer-control-content {
+	padding: 1em;
+}
+
+.status-filters {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+.status-filters__title {
+	font-family: 'GT America', sans-serif;
+	font-size: 150%;
+	text-transform: uppercase;
+}
+
+.status-filters label::before {
+	background: url('../img/k.svg') center / 50% no-repeat rgb(38, 38, 38);
+	border-radius: 50%;
+	content: '';
+	display: inline-block;
+	margin-inline-end: .25em;
+	padding: 0.55em;
+	transform: translateY(.15em);
+}
+
+.status-filters input[value="in_progress"]+label::before {
+	background-color: #9b7863;
+}
+
+.status-filters input[value="invest"]+label::before {
+	background-color: rgb(250, 249, 249);
+	background-image: url('../img/k--black.svg');
+	outline: 1px solid rgb(38, 38, 38);
+}
+
+.city-map:not(:has(.status-filters input[value="done"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(38, 38, 38);"]) {
+	display: none;
+}
+
+.city-map:not(:has(.status-filters input[value="in_progress"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: #9b7863;"]) {
+	display: none;
+}
+
+.city-map:not(:has(.status-filters input[value="invest"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]) {
+	display: none;
 }
 
 /** MARK: YMap */
@@ -57,11 +107,11 @@ ymaps {
 
 ymaps .ymaps3--hint-title {
 	font-family: 'GT America', sans-serif;
-    color: #262626;
-    font-size: 130%;
-    font-weight: 500;
-    line-height: 1;
-    text-transform: uppercase;
+	color: rgb(38, 38, 38);
+	font-size: 130%;
+	font-weight: 500;
+	line-height: 1;
+	text-transform: uppercase;
 }
 
 .ymaps3--small-poi svg {
@@ -74,33 +124,33 @@ ymaps .ymaps3--hint-title {
 }
 
 .marker-cluster {
-    align-items: center;
-    background-color: #262626;
+	align-items: center;
+	background-color: rgb(38, 38, 38);
 	border-radius: 2em;
 	border: none;
-    color: #FAF9F9;
+	color: rgb(250, 249, 249);
 	cursor: pointer;
-    display: flex;
-    font-family: 'GT America', sans-serif;
-    font-size: 180%;
+	display: flex;
+	font-family: 'GT America', sans-serif;
+	font-size: 180%;
 	height: 1.25em;
-    justify-content: center;
-    text-align: center;
+	justify-content: center;
+	text-align: center;
 	transform: translate(-50%, -50%);
 	width: 1.25em;
 }
 
 .marker-cluster--done {
-    background-color: #262626;
-    color: #FAF9F9;
+	background-color: rgb(38, 38, 38);
+	color: rgb(250, 249, 249);
 }
 
 .marker-cluster--in_progress {
-    background-color: #9b7863;
-    color: #FAF9F9;
+	background-color: #9b7863;
+	color: rgb(250, 249, 249);
 }
 
 .marker-cluster--invest {
-    background-color: #FAF9F9;
-    color: #262626;
+	background-color: rgb(250, 249, 249);
+	color: rgb(38, 38, 38);
 }

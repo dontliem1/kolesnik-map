@@ -42,6 +42,7 @@
 		"@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
 		"@yandex/ymaps3-clusterer": "^0.0.11",
 		"@yandex/ymaps3-default-ui-theme": "^0.0.19",
+		"@yandex/ymaps3-drawer-control": "^0.0.2",
 		"@yandex/ymaps3-types": "^1.0.18033998",
 		"cross-env": "^7.0.3",
 		"luxon": "^3.6.1",

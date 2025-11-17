@@ -3,11 +3,11 @@ await ymaps3.ready;
 const {YMap, YMapDefaultSchemeLayer, YMapControls, YMapMarker, YMapDefaultFeaturesLayer} = ymaps3;
 
 // Load the control package and extract the zoom control from it
-ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', '@yandex/ymaps3-default-ui-theme@latest');
-const {YMapZoomControl, YMapDefaultMarker, YMapPopupMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
+ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', ['@yandex/ymaps3-default-ui-theme@latest', '@yandex/ymaps3-clusterer@latest', '@yandex/ymaps3-drawer-control@latest']);
 
-ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', '@yandex/ymaps3-clusterer@latest');
+const {YMapZoomControl, YMapDefaultMarker, YMapPopupMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
 const {YMapClusterer, clusterByGrid} = await ymaps3.import('@yandex/ymaps3-clusterer');
+const {YMapDrawerControl} = await ymaps3.import('@yandex/ymaps3-drawer-control');
 
 const GRAY_SKIN = new YMapDefaultSchemeLayer({
     customization: [
@@ -6637,7 +6637,7 @@ const GRAY_SKIN = new YMapDefaultSchemeLayer({
     ]
 });
 
-const ZOOM_CONTROL = new YMapControls({position: 'right'}).addChild(new YMapZoomControl({}));
+const ZOOM_CONTROL = new YMapControls({position: 'right', orientation: 'vertical'}).addChild(new YMapZoomControl({}));
 
 /** @type {import("@yandex/ymaps3-types").BehaviorType[]} */
 const behaviors = ["drag", "pinchZoom", "dblClick", "magnifier", "oneFingerZoom", "mouseRotate", "mouseTilt", "pinchRotate", "panTilt"];
@@ -6702,6 +6702,7 @@ function circle(count, status) {
     const circle = document.createElement('div');
     circle.classList.add('marker-cluster', `marker-cluster--${status}`);
     circle.innerText = count;
+
     return circle;
 }
 
@@ -6757,6 +6758,16 @@ function addClusterer(map, status, features) {
     }));
 }
 
+const drawerControl = new YMapDrawerControl({
+    position: 'left',
+    open: false,
+    onOpenChange: (value) => {
+      drawerControl.update({open: !value});
+    },
+    // @ts-ignore
+    content: () => document.getElementById('status-filters'),
+  });
+
 /**
  * @param {{ longitude?: number, latitude?: number, zoom?: number, features: import("@yandex/ymaps3-clusterer").Feature[] }} params
  */
@@ -6767,7 +6778,6 @@ function createCityMap({longitude, latitude, zoom, features}) {
     const map = new YMap(
         document.body,
         {
-            behaviors,
             className: 'city-map',
             location: {center, zoom: zoom ?? 13},
             worldOptions: {cycledX: false, cycledY: false},
@@ -6776,6 +6786,7 @@ function createCityMap({longitude, latitude, zoom, features}) {
         [
             GRAY_SKIN,
             ZOOM_CONTROL,
+            drawerControl,
             new YMapDefaultFeaturesLayer({visible: true}),
         ]
     );

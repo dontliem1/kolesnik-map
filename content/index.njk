@@ -2,6 +2,15 @@
 title: 'Карта объектов компании Колесник'
 ---
 <h1 class="visually-hidden">{{ title }}</h1>
+<fieldset id="status-filters" class="status-filters">
+	<legend class="status-filters__title">Статус</legend>
+	<input type="checkbox" id="status-filter-done" name="status-filter" value="done" checked>
+	<label for="status-filter-done">Завершён</label><br>
+	<input type="checkbox" id="status-filter-in-progress" name="status-filter" value="in_progress" checked>
+	<label for="status-filter-in-progress">В работе</label><br>
+	<input type="checkbox" id="status-filter-invest" name="status-filter" value="invest" checked>
+	<label for="status-filter-invest">Открыт для инвестиций</label>
+</fieldset>
 <script type="module">
 	import {createCityMap} from '{{ "/lib/ymaps.js" | htmlBaseUrl }}'
 
