@@ -1,13 +1,10 @@
-media: public/img
 content:
   - name: projects
     label: Проекты
     type: collection
     path: content/projects
-    filename: "{{ fields.slug }}"
-    subfolders: false
     view:
-      fields: [title, draft, status]
+      fields: [title, draft, status, city]
     fields:
       - name: city
         label: Город
@@ -71,10 +68,8 @@ content:
     label: Города
     type: collection
     path: content/cities
-    filename: "{{ fields.slug }}"
-    subfolders: false
     view:
-      fields: [title, draft, status]
+      fields: [title, draft, latitude, longitude, zoom]
     fields:
       - name: title
         label: Название
