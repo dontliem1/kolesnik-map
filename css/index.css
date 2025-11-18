@@ -15,7 +15,7 @@ html {
 }
 
 body {
-	font-family: -apple-system, system-ui, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
 	margin: 0;
 	height: 100%;
 }
@@ -166,6 +166,10 @@ ymaps {
 	touch-action: manipulation;
 }
 
+.ymaps3x0--marker:has(.ymaps3--default-marker-point:hover) {
+	z-index: 1000 !important;
+}
+
 .ymaps3--default-marker__background {
 	position: relative;
 }
@@ -193,6 +197,10 @@ ymaps .ymaps3--hint-title {
 	font-weight: 500;
 	line-height: 1;
 	text-transform: uppercase;
+}
+
+ymaps .ymaps3--hint {
+	max-width: 220px;
 }
 
 .ymaps3--small-poi svg {
