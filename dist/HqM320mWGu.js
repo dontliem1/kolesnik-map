@@ -6,19 +6,6 @@ import {createCityMap} from '/kolesnik-map/lib/ymaps.js'
 		zoom: '13',
 		features: [
 				{
-					id: 'yamskaya-76',
-					type: 'Feature',
-					geometry: {
-						type: 'Point',
-						coordinates: [65.566793, 57.162342],
-					},
-					properties: {
-						status: 'in_progress',
-						size: 'small',
-						title: 'Ямская, 76',
-					},
-				},
-				{
 					id: 'vodoprovodnaya-14',
 					type: 'Feature',
 					geometry: {
@@ -42,6 +29,19 @@ import {createCityMap} from '/kolesnik-map/lib/ymaps.js'
 						status: 'done',
 						size: 'small',
 						title: 'Водопроводная, 15',
+					},
+				},
+				{
+					id: 'yamskaya-76',
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: [65.566793, 57.162342],
+					},
+					properties: {
+						status: 'in_progress',
+						size: 'small',
+						title: 'Ямская, 76',
 					},
 				},
 		],
