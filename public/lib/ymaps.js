@@ -6671,7 +6671,7 @@ function createDefaultMarker({longitude, latitude, title, status, size, id, map}
 
     const marker = new YMapDefaultMarker(
         {
-            color: {day: color, night: color},
+            color: {day: color, night: color, strokeDay: color, strokeNight: color},
             coordinates: center,
             hideOutsideViewport: false,
             onClick: hasPopup ? () => {

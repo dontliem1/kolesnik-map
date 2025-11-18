@@ -109,6 +109,7 @@ body {
 .project-popup__title {
 	font-family: 'GT America', sans-serif;
 	font-size: 200%;
+	line-height: 1;
 	margin: 0 0 0.2em;
 	padding-right: 32px;
 	text-transform: uppercase;
@@ -179,7 +180,7 @@ ymaps {
 	content: '';
 	pointer-events: none;
 	inset: 0;
-	background: url('../img/k.svg') 50% 30% / 50% no-repeat;
+	background: url('../img/k.svg') 50% 30% / 45% no-repeat;
 }
 
 .ymaps3--small-poi .ymaps3--default-marker__background::before {
