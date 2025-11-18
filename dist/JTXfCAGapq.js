@@ -1,9 +1,15 @@
 import {createCityMap} from '/kolesnik-map/lib/ymaps.js'
 
 	createCityMap({
+		
 		longitude: '37.617831',
+		
+		
 		latitude: '55.758798',
+		
+		
 		zoom: '12',
+		
 		features: [
 				{
 					id: '2-lugovaya-35',
