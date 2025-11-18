@@ -53,9 +53,15 @@ layout: layouts/base.njk
 	import {createCityMap} from '{{ "/lib/ymaps.js" | htmlBaseUrl }}'
 
 	createCityMap({
+		{% if longitude %}
 		longitude: '{{ longitude }}',
+		{% endif %}
+		{% if latitude %}
 		latitude: '{{ latitude }}',
+		{% endif %}
+		{% if zoom %}
 		zoom: '{{ zoom }}',
+		{% endif %}
 		features: [
 			{%- for project in collections.projects %}
 				{
