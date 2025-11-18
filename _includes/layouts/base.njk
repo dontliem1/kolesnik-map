@@ -33,11 +33,11 @@
         <meta name="theme-color" content="#fff" />
 
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={{ title }} />
+        <meta property="og:title" content="{{ title }}" />
         <meta property="og:url" content="/" />
         <meta
           property="og:image"
-          content="/img/og-image.jpg"
+          content="{{ '/img/og-image.jpg' | htmlBaseUrl }}"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
