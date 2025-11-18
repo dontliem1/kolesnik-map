@@ -6,6 +6,19 @@ import {createCityMap} from '/kolesnik-map/lib/ymaps.js'
 		zoom: '',
 		features: [
 				{
+					id: 'vajnera-151',
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: [59.96188, 56.908463],
+					},
+					properties: {
+						status: 'done',
+						size: 'small',
+						title: 'Вайнера, 15/1',
+					},
+				},
+				{
 					id: 'vodoprovodnaya-14',
 					type: 'Feature',
 					geometry: {
