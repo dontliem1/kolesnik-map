@@ -21,16 +21,22 @@ layout: layouts/base.njk
 {%- for project in collections.projects %}
 	<template class="project-popup" id="project-{{ project.fileSlug }}">
 		{% if project.data.cover %}
-		<img alt="" class="project-popup__cover" src="{{ project.data.cover }}" 
-            width="300"
-            height="200"
-            decoding="async"
-            loading="lazy">
+			<img
+				alt=""
+				class="project-popup__cover"
+				src="{{ project.data.cover }}"
+				width="300"
+				height="200"
+				decoding="async"
+				loading="lazy"
+			>
 		{% endif %}
 		<h2 class="project-popup__title">{{ project.data.title }}</h2>
 		<span class="project-popup__status">{{ statuses[project.data.status] }}</span>
 		{{ project.content | safe }}
+		{% if project.data.url %}
 		<a class="project-popup__btn project-popup__btn--{{ project.data.status }}" href="{{ project.data.url }}" target="_blank">
+		{% endif %}
           {{ 'На страницу объекта' if status === 'done' else 'О проекте' }}
 		</a>
 		<a

@@ -40,4 +40,17 @@ export default function(eleventyConfig) {
 	eleventyConfig.addFilter("sortAlphabetically", strings =>
 		(strings || []).sort((b, a) => b.localeCompare(a))
 	);
+
+	// Check if a path is relative (not starting with / or http)
+	eleventyConfig.addFilter("isRelativePath", (path) => {
+		if (!path) return false;
+		const cleaned = path.replace(/^content\//, '');
+		return cleaned[0] !== '/' && !cleaned.startsWith('http');
+	});
+
+	// Clean path by removing content/ prefix
+	eleventyConfig.addFilter("cleanPath", (path) => {
+		if (!path) return '';
+		return path.replace(/^content\//, '');
+	});
 };
