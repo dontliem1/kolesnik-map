@@ -36,19 +36,23 @@ body {
 	padding: 1em;
 }
 
-.status-filters {
+.filter-group {
 	border: none;
 	margin: 0;
 	padding: 0;
 }
 
-.status-filters__title {
+.filter-group+.filter-group {
+	margin-block-start: 1em;
+}
+
+.filter-group__title {
 	font-family: 'GT America', sans-serif;
 	font-size: 150%;
 	text-transform: uppercase;
 }
 
-.status-filters label::before {
+.filter-group--status label::before {
 	background: url('../img/k.svg') center / 50% no-repeat rgb(38, 38, 38);
 	border-radius: 50%;
 	content: '';
@@ -58,26 +62,103 @@ body {
 	transform: translateY(.15em);
 }
 
-.status-filters input[value="in_progress"]+label::before {
+.filter-group--status input[value="in_progress"]+label::before {
 	background-color: #9b7863;
 }
 
-.status-filters input[value="invest"]+label::before {
+.filter-group--status input[value="invest"]+label::before {
 	background-color: rgb(250, 249, 249);
 	background-image: url('../img/k--black.svg');
 	outline: 1px solid rgb(38, 38, 38);
 }
 
-.city-map:not(:has(.status-filters input[value="done"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(38, 38, 38);"]) {
+.city-map:not(:has(.filter-group--status input[value="done"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(38, 38, 38);"]) {
 	display: none;
 }
 
-.city-map:not(:has(.status-filters input[value="in_progress"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: #9b7863;"]) {
+.city-map:not(:has(.filter-group--status input[value="in_progress"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: #9b7863;"]) {
 	display: none;
 }
 
-.city-map:not(:has(.status-filters input[value="invest"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]) {
+.city-map:not(:has(.filter-group--status input[value="invest"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]) {
 	display: none;
+}
+
+.filter-group__link {
+	display: block;
+	color: #9b7863;
+	padding-block: .15em;
+}
+
+/** MARK: Project popup */
+.ymaps3--popup-marker__position-top .ymaps3--popup-marker_container {
+	max-width: 21.25rem;
+	padding-bottom: 1em;
+}
+
+.project-popup__cover {
+	border-top-left-radius: var(--ymaps3-default-border-radius);
+	border-top-right-radius: var(--ymaps3-default-border-radius);
+	height: auto;
+	margin: -8px -12px 1.25em;
+	width: -moz-available;
+	width: -webkit-fill-available;
+	vertical-align: middle;
+}
+
+.project-popup__title {
+	font-family: 'GT America', sans-serif;
+	font-size: 200%;
+	margin: 0 0 0.2em;
+	padding-right: 32px;
+	text-transform: uppercase;
+}
+
+.project-popup__status {
+	color: #666;
+	margin: 0 0 .5em;
+}
+
+.project-popup {
+	position: relative;
+}
+
+.project-popup p {
+	margin: 0;
+}
+
+.project-popup p+p {
+	margin-block-start: .5em;
+}
+
+.project-popup__btn {
+	border-radius: 4px;
+	background-color: #9b7863;
+	color: #FAF9F9 !important;
+	display: inline-block;
+	font-weight: 500;
+	justify-self: start;
+	padding: 0.75em 1.5em;
+	text-decoration: none;
+}
+
+.project-popup__link {
+	align-items: center;
+	display: inline-flex;
+	font-size: 10px;
+	justify-content: center;
+	line-height: 1;
+	min-height: 24px;
+	min-width: 24px;
+	position: absolute;
+	top: 0;
+	text-align: center;
+	text-decoration: none;
+	right: 0;
+}
+
+.project-popup__link:hover {
+	opacity: 0.8;
 }
 
 /** MARK: YMap */

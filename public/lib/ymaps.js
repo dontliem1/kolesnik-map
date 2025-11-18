@@ -5,7 +5,7 @@ const {YMap, YMapDefaultSchemeLayer, YMapControls, YMapMarker, YMapDefaultFeatur
 // Load the control package and extract the zoom control from it
 ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', ['@yandex/ymaps3-default-ui-theme@latest', '@yandex/ymaps3-clusterer@latest', '@yandex/ymaps3-drawer-control@latest']);
 
-const {YMapZoomControl, YMapDefaultMarker, YMapPopupMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
+const {YMapZoomControl, YMapDefaultMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
 const {YMapClusterer, clusterByGrid} = await ymaps3.import('@yandex/ymaps3-clusterer');
 const {YMapDrawerControl} = await ymaps3.import('@yandex/ymaps3-drawer-control');
 
@@ -6655,28 +6655,43 @@ function statusToColor(status) {
 }
 
 /**
- * @param {{ longitude: number, latitude: number, title?: string, status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps }} params
+ * @param {{ longitude: number, latitude: number, title?: string, status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps, id: string }} params
  */
-function createDefaultMarker({longitude, latitude, title, status, size}) {
+function createDefaultMarker({longitude, latitude, title, status, size, id}) {
     /** @type {import("@yandex/ymaps3-types").LngLat} */
     const center = [longitude, latitude];
     const color = statusToColor(status);
+    const hasPopup = document.getElementById(`project-${id}`);
+    const content = () => (/** @type {HTMLTemplateElement | null} */ (document.getElementById(`project-${id}`)))?.content.cloneNode(true);
 
-    return new YMapDefaultMarker(
+    const marker = new YMapDefaultMarker(
         {
             color: {day: color, night: color},
             coordinates: center,
+            onClick: hasPopup ? () => {
+                marker.update({
+                    popup: {
+                        // @ts-ignore
+                        content,
+                        show: true
+                    }
+                });
+            } : undefined,
+            // @ts-ignore
+            popup: hasPopup ? { content } : undefined,
             size: size ?? 'normal',
             staticHint: false,
             title,
         },
-    )
+    );
+
+    return marker;
 }
 
 /**
- * @param {{ longitude: number, latitude: number, title: string, status: 'done' | 'in_progress' | 'invest' }} params
+ * @param {{ longitude: number, latitude: number, title: string, status: 'done' | 'in_progress' | 'invest', id: string }} params
  */
-function createProjectMap({longitude, latitude, title, status}) {
+function createProjectMap({longitude, latitude, title, status, id}) {
     /** @type {import("@yandex/ymaps3-types").LngLat} */
     const center = [longitude, latitude];
 
@@ -6693,7 +6708,7 @@ function createProjectMap({longitude, latitude, title, status}) {
             GRAY_SKIN,
             ZOOM_CONTROL,
             new YMapDefaultFeaturesLayer({visible: true}),
-            createDefaultMarker({longitude, latitude, title, status}),
+            createDefaultMarker({longitude, latitude, title, status, id}),
         ]
     );
 }
@@ -6736,12 +6751,13 @@ function addClusterer(map, status, features) {
     return map.addChild(new YMapClusterer({
         method: clusterByGrid({gridSize: 128}),
         features,
-        marker: (/** @type {import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps } }} */ feature) => createDefaultMarker({
+        marker: (/** @type {import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps, title?: string } }} */ feature) => createDefaultMarker({
             longitude: feature.geometry.coordinates[0],
             latitude: feature.geometry.coordinates[1],
-            title: feature.id,
+            title: feature.properties?.title,
             status: feature.properties?.status,
             size: feature.properties?.size,
+            id: feature.id,
         }),
         cluster: (coordinates, features) =>
             new YMapMarker(
@@ -6762,11 +6778,11 @@ const drawerControl = new YMapDrawerControl({
     position: 'left',
     open: false,
     onOpenChange: (value) => {
-      drawerControl.update({open: !value});
+        drawerControl.update({open: !value});
     },
     // @ts-ignore
-    content: () => document.getElementById('status-filters'),
-  });
+    content: () => document.getElementById('map-drawer'),
+});
 
 /**
  * @param {{ longitude?: number, latitude?: number, zoom?: number, features: import("@yandex/ymaps3-clusterer").Feature[] }} params

@@ -2,15 +2,42 @@
 title: 'Карта объектов компании Колесник'
 ---
 <h1 class="visually-hidden">{{ title }}</h1>
-<fieldset id="status-filters" class="status-filters">
-	<legend class="status-filters__title">Статус</legend>
-	<input type="checkbox" id="status-filter-done" name="status-filter" value="done" checked>
-	<label for="status-filter-done">Завершён</label><br>
-	<input type="checkbox" id="status-filter-in-progress" name="status-filter" value="in_progress" checked>
-	<label for="status-filter-in-progress">В работе</label><br>
-	<input type="checkbox" id="status-filter-invest" name="status-filter" value="invest" checked>
-	<label for="status-filter-invest">Открыт для инвестиций</label>
-</fieldset>
+{% set statuses = { 'done': 'Готово', 'in_progress': 'Завершён', 'invest': 'Открыт для инвестиций' } %}
+<nav id="map-drawer" class="filters">
+	<fieldset id="status-filters" class="filter-group filter-group--status">
+		<legend class="filter-group__title">Статус</legend>
+		{% for status, status_name in statuses %}
+			<input type="checkbox" id="status-filter-{{ status }}" name="status-filter" value="{{ status }}" checked>
+			<label for="status-filter-{{ status }}">{{ status_name }}</label><br>
+		{% endfor %}
+	</fieldset>
+	<fieldset class="filter-group">
+		<legend class="filter-group__title">Город</legend>
+		<a class="filter-group__link" href="/cities/tyumen">Тюмень</a>
+	</fieldset>
+</nav>
+{%- for project in collections.projects %}
+	<template class="project-popup" id="project-{{ project.fileSlug }}">
+		<img alt="" class="project-popup__cover" src="{{ project.data.cover }}" 
+            width="300"
+            height="200"
+            decoding="async"
+            loading="lazy">
+		<h2 class="project-popup__title">{{ project.data.title }}</h2>
+		<span class="project-popup__status">{{ statuses[project.data.status] }}</span>
+		{{ project.content | safe }}
+		<a class="project-popup__btn project-popup__btn--{{ project.data.status }}" href="{{ project.data.url }}" target="_blank">
+          {{ 'На страницу объекта' if status === 'done' else 'О проекте' }}
+		</a>
+		<a
+			class="project-popup__link"
+			title="Прямая ссылка для встраивания"
+			href="/projects/{{ project.fileSlug }}"
+		>
+			🔗
+		</a>
+	</template>
+{%- endfor %}
 <script type="module">
 	import {createCityMap} from '{{ "/lib/ymaps.js" | htmlBaseUrl }}'
 
@@ -18,7 +45,7 @@ title: 'Карта объектов компании Колесник'
 		features: [
 			{%- for project in collections.projects %}
 				{
-					id: '{{ project.data.title }}',
+					id: '{{ project.fileSlug }}',
 					type: 'Feature',
 					geometry: {
 						type: 'Point',
@@ -27,6 +54,7 @@ title: 'Карта объектов компании Колесник'
 					properties: {
 						status: '{{ project.data.status }}',
 						size: '{{ "normal" if project.data.is_big else "small" }}',
+						title: '{{ project.data.title }}',
 					},
 				},
 			{%- endfor %}
