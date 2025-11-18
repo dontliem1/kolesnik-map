@@ -4,7 +4,6 @@ date: 2018-05-01
 status: done
 url: https://ddkolesnik.com/vodoprovodnaya-14
 is_big: true
-cover: https://malikovnikita.com/wp-content/uploads/1-9.jpg
 latitude: 57.157915
 longitude: 65.544299
 city: Тюмень

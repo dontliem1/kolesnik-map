@@ -1,4 +1,71 @@
 ---
 layout: layouts/base.njk
 ---
+<h1 class="visually-hidden">{{ title }}</h1>
+{% set statuses = { 'done': 'Готово', 'in_progress': 'Завершён', 'invest': 'Открыт для инвестиций' } %}
+<nav id="map-drawer" class="filters">
+	<fieldset id="status-filters" class="filter-group filter-group--status">
+		<legend class="filter-group__title">Статус</legend>
+		{% for status, status_name in statuses %}
+			<input type="checkbox" id="status-filter-{{ status }}" name="status-filter" value="{{ status }}" checked>
+			<label for="status-filter-{{ status }}">{{ status_name }}</label><br>
+		{% endfor %}
+	</fieldset>
+	<fieldset class="filter-group">
+		<legend class="filter-group__title">Город</legend>
+		{% for city in collections.cities %}
+			<a class="filter-group__link" href="/cities/{{ city.fileSlug }}">{{ city.data.title }}</a>
+		{% endfor %}
+	</fieldset>
+</nav>
+{%- for project in collections.projects %}
+	<template class="project-popup" id="project-{{ project.fileSlug }}">
+		{% if project.data.cover %}
+		<img alt="" class="project-popup__cover" src="{{ project.data.cover }}" 
+            width="300"
+            height="200"
+            decoding="async"
+            loading="lazy">
+		{% endif %}
+		<h2 class="project-popup__title">{{ project.data.title }}</h2>
+		<span class="project-popup__status">{{ statuses[project.data.status] }}</span>
+		{{ project.content | safe }}
+		<a class="project-popup__btn project-popup__btn--{{ project.data.status }}" href="{{ project.data.url }}" target="_blank">
+          {{ 'На страницу объекта' if status === 'done' else 'О проекте' }}
+		</a>
+		<a
+			class="project-popup__link"
+			title="Прямая ссылка для встраивания"
+			href="/projects/{{ project.fileSlug }}"
+		>
+			🔗
+		</a>
+	</template>
+{%- endfor %}
 {{ content | safe }}
+<script type="module">
+	import {createCityMap} from '{{ "/lib/ymaps.js" | htmlBaseUrl }}'
+
+	createCityMap({
+		longitude: '{{ longitude }}',
+		latitude: '{{ latitude }}',
+		zoom: '{{ zoom }}',
+		features: [
+			{%- for project in collections.projects %}
+				{
+					id: '{{ project.fileSlug }}',
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: [{{ project.data.longitude }}, {{ project.data.latitude }}],
+					},
+					properties: {
+						status: '{{ project.data.status }}',
+						size: '{{ "normal" if project.data.is_big else "small" }}',
+						title: '{{ project.data.title }}',
+					},
+				},
+			{%- endfor %}
+		],
+	});
+</script>

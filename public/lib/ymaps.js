@@ -6658,9 +6658,9 @@ function statusToColor(status) {
 }
 
 /**
- * @param {{ longitude: number, latitude: number, title?: string, status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps, id: string }} params
+ * @param {{ longitude: number, latitude: number, title?: string, status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps, id: string, map?: any }} params
  */
-function createDefaultMarker({longitude, latitude, title, status, size, id}) {
+function createDefaultMarker({longitude, latitude, title, status, size, id, map}) {
     /** @type {import("@yandex/ymaps3-types").LngLat} */
     const center = [longitude, latitude];
     const color = statusToColor(status);
@@ -6673,6 +6673,7 @@ function createDefaultMarker({longitude, latitude, title, status, size, id}) {
         {
             color: {day: color, night: color},
             coordinates: center,
+            hideOutsideViewport: false,
             onClick: hasPopup ? () => {
                 // Close the previously active marker's popup if it exists and is different
                 if (activeMarker && activeMarker.marker !== marker && activeMarker.isPopupVisible) {
@@ -6687,6 +6688,7 @@ function createDefaultMarker({longitude, latitude, title, status, size, id}) {
                 }
 
                 // Toggle this marker's popup
+                const wasVisible = isPopupVisible;
                 isPopupVisible = !isPopupVisible;
                 marker.update({
                     popup: {
@@ -6696,11 +6698,39 @@ function createDefaultMarker({longitude, latitude, title, status, size, id}) {
                     }
                 });
 
+                // Update map position to show the popup if opening it
+                if (isPopupVisible && !wasVisible && map) {
+                    // Update map center to bring marker into view
+                    // Offset center upward to account for popup appearing above marker
+                    requestAnimationFrame(() => {
+                        const topPosition = document.querySelector('.ymaps3--popup-marker:not(.ymaps3--popup-marker__hide) .project-popup__link')?.getBoundingClientRect().top;
+
+                        if (topPosition && topPosition < -100) {
+                            const currentZoom = map.location?.zoom ?? 13;
+                            console.log(map);
+
+                            // Calculate offset based on zoom level (higher zoom = smaller offset)
+                            // At zoom 13, offset by ~0.003 degrees (roughly 300m)
+                            const offsetFactor = Math.pow(2, 13 - currentZoom);
+                            const latitudeOffset = 0.025 * offsetFactor;
+                            const adjustedCenter = [longitude, latitude + latitudeOffset];
+
+                            map.update({
+                                location: {
+                                    center: adjustedCenter,
+                                    duration: 1000,
+                                    easing: 'ease-out',
+                                }
+                            });
+                        }
+                    });
+                }
+
                 // Update the active marker reference
-                activeMarker = { marker, isPopupVisible, content };
+                activeMarker = {marker, isPopupVisible, content};
             } : undefined,
             // @ts-ignore
-            popup: hasPopup ? { content } : undefined,
+            popup: hasPopup ? {content} : undefined,
             size: size ?? 'normal',
             staticHint: false,
             title,
@@ -6717,7 +6747,7 @@ function createProjectMap({longitude, latitude, title, status, id}) {
     /** @type {import("@yandex/ymaps3-types").LngLat} */
     const center = [longitude, latitude];
 
-    return new YMap(
+    const map = new YMap(
         document.body,
         {
             behaviors,
@@ -6730,9 +6760,12 @@ function createProjectMap({longitude, latitude, title, status, id}) {
             GRAY_SKIN,
             ZOOM_CONTROL,
             new YMapDefaultFeaturesLayer({visible: true}),
-            createDefaultMarker({longitude, latitude, title, status, id}),
         ]
     );
+
+    map.addChild(createDefaultMarker({longitude, latitude, title, status, id, map}));
+
+    return map;
 }
 
 function circle(count, status) {
@@ -6780,6 +6813,7 @@ function addClusterer(map, status, features) {
             status: feature.properties?.status,
             size: feature.properties?.size,
             id: feature.id,
+            map,
         }),
         cluster: (coordinates, features) =>
             new YMapMarker(
@@ -6787,7 +6821,13 @@ function addClusterer(map, status, features) {
                     coordinates,
                     onClick() {
                         const bounds = getBounds(features.map((feature) => feature.geometry.coordinates));
-                        map.update({location: {bounds}});
+                        map.update({
+                            location: {
+                                bounds,
+                                duration: 1000,
+                                easing: 'ease-out',
+                            },
+                        });
                     }
                 },
                 // @ts-ignore

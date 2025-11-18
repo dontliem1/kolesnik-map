@@ -4,17 +4,22 @@ content:
     label: Проекты
     type: collection
     path: content/projects
-    filename: "{{ fields.title }}"
+    filename: "{{ fields.slug }}"
     subfolders: false
     view:
       fields: [title, draft, status]
     fields:
+      - name: city
+        label: Город
+        type: reference
+        options:
+          collection: cities
       - name: title
         label: Заголовок
         type: string
         required: true
         description: "Например: Водопроводная, 14"
-      - name: title
+      - name: slug
         label: Транслитерация для ссылки
         type: string
         required: true
@@ -62,3 +67,46 @@ content:
         type: rich-text
         options:
           media: false
+  - name: cities
+    label: Города
+    type: collection
+    path: content/cities
+    filename: "{{ fields.slug }}"
+    subfolders: false
+    view:
+      fields: [title, draft, status]
+    fields:
+      - name: title
+        label: Название
+        type: string
+        required: true
+        description: "Например: vodoprovodnaya-14"
+      - name: slug
+        label: На английском для ссылки
+        type: string
+        required: true
+        description: "Например: moscow"
+      - name: draft
+        label: Черновик
+        type: boolean
+      - name: latitude
+        label: Широта
+        type: number
+        step: 0.000001
+        options:
+          min: -180
+          max: 180
+      - name: longitude
+        label: Долгота
+        type: number
+        step: 0.000001
+        options:
+          min: -180
+          max: 180
+      - name: zoom
+        label: Масштаб
+        type: number
+        step: 1
+        options:
+          min: 6
+          max: 18

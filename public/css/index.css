@@ -87,20 +87,20 @@ body {
 .filter-group__link {
 	display: block;
 	color: #9b7863;
-	padding-block: .15em;
+	padding-block: .3em;
 }
 
 /** MARK: Project popup */
 .ymaps3--popup-marker__position-top .ymaps3--popup-marker_container {
 	max-width: 21.25rem;
-	padding-bottom: 1em;
+	padding: 1rem;
 }
 
 .project-popup__cover {
 	border-top-left-radius: var(--ymaps3-default-border-radius);
 	border-top-right-radius: var(--ymaps3-default-border-radius);
 	height: auto;
-	margin: -8px -12px 1.25em;
+	margin: -1rem -1rem 1.25rem;
 	width: -moz-available;
 	width: -webkit-fill-available;
 	vertical-align: middle;
