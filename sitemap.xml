@@ -11,35 +11,77 @@
 		
 		<url>
 			<loc>https://example.com/kolesnik-map/about/</loc>
-			<lastmod>2025-11-16</lastmod>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/cities/ekb/</loc>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/cities/krasnoyarsk/</loc>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/cities/moscow/</loc>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/cities/pervouralsk/</loc>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/cities/tyumen/</loc>
+			<lastmod>2025-11-18</lastmod>
 		</url>
 	
 	
 		
 		<url>
 			<loc>https://example.com/kolesnik-map/</loc>
-			<lastmod>2025-11-16</lastmod>
+			<lastmod>2025-11-18</lastmod>
 		</url>
 	
 	
 		
 		<url>
 			<loc>https://example.com/kolesnik-map/projects/</loc>
-			<lastmod>2025-11-16</lastmod>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/projects/vodoprovodnaya-15/</loc>
+			<lastmod>2025-11-18</lastmod>
 		</url>
 	
 	
 		
 		<url>
 			<loc>https://example.com/kolesnik-map/tags/</loc>
-			<lastmod>2025-11-16</lastmod>
+			<lastmod>2025-11-18</lastmod>
 		</url>
 	
 	
 		
 		<url>
 			<loc>https://example.com/kolesnik-map/feed/feed.xml</loc>
-			<lastmod>2025-11-16</lastmod>
+			<lastmod>2025-11-18</lastmod>
 		</url>
 	
 </urlset>

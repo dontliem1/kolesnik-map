@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'GT America';
-    font-weight: 700;
-    font-display: swap;
-    src: url('../fonts/GT-America-LC-Compressed-Bold.otf') format("opentype");
+	font-family: 'GT America';
+	font-weight: 700;
+	font-display: swap;
+	src: url('../fonts/GT-America-LC-Compressed-Bold.otf') format("opentype");
 }
 
 @view-transition {
@@ -10,6 +10,7 @@
 }
 
 html {
+	accent-color: #9b7863;
 	height: 100%;
 }
 
@@ -28,6 +29,136 @@ body {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+/** MARK: Map statuses */
+.ymaps3--drawer-control-content {
+	padding: 1em;
+}
+
+.filter-group {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+.filter-group+.filter-group {
+	margin-block-start: 1em;
+}
+
+.filter-group__title {
+	font-family: 'GT America', sans-serif;
+	font-size: 150%;
+	text-transform: uppercase;
+}
+
+.filter-group--status label::before {
+	background: url('../img/k.svg') center / 50% no-repeat rgb(38, 38, 38);
+	border-radius: 50%;
+	content: '';
+	display: inline-block;
+	margin-inline-end: .25em;
+	padding: 0.55em;
+	transform: translateY(.15em);
+}
+
+.filter-group--status input[value="in_progress"]+label::before {
+	background-color: #9b7863;
+}
+
+.filter-group--status input[value="invest"]+label::before {
+	background-color: rgb(250, 249, 249);
+	background-image: url('../img/k--black.svg');
+	outline: 1px solid rgb(38, 38, 38);
+}
+
+.city-map:not(:has(.filter-group--status input[value="done"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(38, 38, 38);"]) {
+	display: none;
+}
+
+.city-map:not(:has(.filter-group--status input[value="in_progress"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: #9b7863;"]) {
+	display: none;
+}
+
+.city-map:not(:has(.filter-group--status input[value="invest"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]) {
+	display: none;
+}
+
+.filter-group__link {
+	display: block;
+	color: #9b7863;
+	padding-block: .3em;
+}
+
+/** MARK: Project popup */
+.ymaps3--popup-marker__position-top .ymaps3--popup-marker_container {
+	max-width: 21.25rem;
+	padding: 1rem;
+}
+
+.project-popup__cover {
+	border-top-left-radius: var(--ymaps3-default-border-radius);
+	border-top-right-radius: var(--ymaps3-default-border-radius);
+	height: auto;
+	margin: -1rem -1rem 1.25rem;
+	width: -moz-available;
+	width: -webkit-fill-available;
+	vertical-align: middle;
+}
+
+.project-popup__title {
+	font-family: 'GT America', sans-serif;
+	font-size: 200%;
+	margin: 0 0 0.2em;
+	padding-right: 32px;
+	text-transform: uppercase;
+}
+
+.project-popup__status {
+	color: #666;
+	margin: 0 0 .5em;
+}
+
+.project-popup {
+	position: relative;
+}
+
+.project-popup p {
+	margin: 0;
+}
+
+.project-popup p+p {
+	margin-block-start: .5em;
+}
+
+.project-popup__btn {
+	border-radius: 4px;
+	background-color: #9b7863;
+	color: #FAF9F9 !important;
+	display: inline-block;
+	font-weight: 500;
+	justify-self: start;
+	padding: 0.75em 1.5em;
+	text-decoration: none;
+}
+
+.project-popup__link {
+	align-items: center;
+	display: inline-flex;
+	font-size: 10px;
+	justify-content: center;
+	line-height: 1;
+	min-height: 24px;
+	min-width: 24px;
+	position: absolute;
+	top: 0;
+	text-align: center;
+	text-decoration: none;
+	right: 0;
+}
+
+.project-popup__link:hover {
+	opacity: 0.8;
 }
 
 /** MARK: YMap */
@@ -57,9 +188,50 @@ ymaps {
 
 ymaps .ymaps3--hint-title {
 	font-family: 'GT America', sans-serif;
-    color: #262626;
-    font-size: 130%;
-    font-weight: 500;
-    line-height: 1;
-    text-transform: uppercase;
+	color: rgb(38, 38, 38);
+	font-size: 130%;
+	font-weight: 500;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.ymaps3--small-poi svg {
+	transform: scale(1.5);
+}
+
+.ymaps3--small-poi .ymaps3--default-marker__background::before {
+	background-size: 75%;
+	z-index: 1;
+}
+
+.marker-cluster {
+	align-items: center;
+	background-color: rgb(38, 38, 38);
+	border-radius: 2em;
+	border: none;
+	color: rgb(250, 249, 249);
+	cursor: pointer;
+	display: flex;
+	font-family: 'GT America', sans-serif;
+	font-size: 180%;
+	height: 1.25em;
+	justify-content: center;
+	text-align: center;
+	transform: translate(-50%, -50%);
+	width: 1.25em;
+}
+
+.marker-cluster--done {
+	background-color: rgb(38, 38, 38);
+	color: rgb(250, 249, 249);
+}
+
+.marker-cluster--in_progress {
+	background-color: #9b7863;
+	color: rgb(250, 249, 249);
+}
+
+.marker-cluster--invest {
+	background-color: rgb(250, 249, 249);
+	color: rgb(38, 38, 38);
 }

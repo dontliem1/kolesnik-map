@@ -13,7 +13,69 @@
 		<script src="https://api-maps.yandex.ru/v3/?apikey=ff9fda6f-85f5-4b40-bad0-191150c41e69&lang=ru_RU"></script>
 	</head>
 	<body>
-		<h1 id="content-not-found">Content not found.</h1>
+		<h1 class="visually-hidden"></h1>
+
+<nav id="map-drawer" class="filters">
+	<fieldset id="status-filters" class="filter-group filter-group--status">
+		<legend class="filter-group__title">Статус</legend>
+		
+			<input type="checkbox" id="status-filter-done" name="status-filter" value="done" checked="">
+			<label for="status-filter-done">Готово</label><br>
+		
+			<input type="checkbox" id="status-filter-in_progress" name="status-filter" value="in_progress" checked="">
+			<label for="status-filter-in_progress">Завершён</label><br>
+		
+			<input type="checkbox" id="status-filter-invest" name="status-filter" value="invest" checked="">
+			<label for="status-filter-invest">Открыт для инвестиций</label><br>
+		
+	</fieldset>
+	<fieldset class="filter-group">
+		<legend class="filter-group__title">Город</legend>
+		
+			<a class="filter-group__link" href="/kolesnik-map/cities/ekb">Екатеринбург</a>
+		
+			<a class="filter-group__link" href="/kolesnik-map/cities/krasnoyarsk">Красноярск</a>
+		
+			<a class="filter-group__link" href="/kolesnik-map/cities/moscow">Москва</a>
+		
+			<a class="filter-group__link" href="/kolesnik-map/cities/pervouralsk">Первоуральск</a>
+		
+			<a class="filter-group__link" href="/kolesnik-map/cities/tyumen">Тюмень</a>
+		
+	</fieldset>
+</nav>
+	<template class="project-popup" id="project-vodoprovodnaya-14">
+		
+		<h2 class="project-popup__title" id="vodoprovodnaya-14">Водопроводная, 14</h2>
+		<span class="project-popup__status">Готово</span>
+		<p>Современный крафтовый кластер с заведениями моноеды, баром и лаунджем с террассой. Бесконечно стильное и интересное здание — одно из самых примечательных в центре города. На заднем дворе —  мы установили арт-объект «Красный Конь» работы современного уличного художника Дмитрия Аске. В открытии крафтового кластера «Конюшня» и арт-объекта приняли участие представители администрации города,  центральной управы города Тюмени. Больше 30 публикаций в СМИ сделали отличную рекламу и арт-объекту и всему кластеру.</p>
+
+		<a class="project-popup__btn project-popup__btn--done" href="https://ddkolesnik.com/vodoprovodnaya-14" target="_blank">
+          О проекте
+		</a>
+		<a class="project-popup__link" title="Прямая ссылка для встраивания" href="/kolesnik-map/projects/vodoprovodnaya-14">
+			🔗
+		</a>
+	</template>
+	<template class="project-popup" id="project-vodoprovodnaya-15">
+		
+		<img alt="" class="project-popup__cover" src="/kolesnik-map/XdMYUrWS45-300.webp" width="300" height="200" decoding="async" loading="lazy">
+		
+		<h2 class="project-popup__title" id="vodoprovodnaya-15">Водопроводная, 15</h2>
+		<span class="project-popup__status">Готово</span>
+		<p>Благоустроенная территория, чистый фасад, высаженные деревья.
+Кардинально изменили внешний вид не только дома, но и улицы. Единый стиль
+входных групп, окон, кондиционеров — придали зданию в центре города
+соответствующий его статусу вид.</p>
+
+		<a class="project-popup__btn project-popup__btn--done" href="https://ddkolesnik.com/tumen/vodoprovodnaya-15" target="_blank">
+          О проекте
+		</a>
+		<a class="project-popup__link" title="Прямая ссылка для встраивания" href="/kolesnik-map/projects/vodoprovodnaya-15">
+			🔗
+		</a>
+	</template>
+<h1 id="content-not-found">Content not found.</h1>
 <p>Go <a href="/kolesnik-map/">home</a>.</p>
 <!--
 
@@ -29,6 +91,6 @@ This is compatible with:
 -->
 
 
-		<script type="module" src="/kolesnik-map"></script>
+		<script type="module" src="/kolesnik-map/dist/2pB0iUfbsm.js"></script>
 	</body>
 </html>
