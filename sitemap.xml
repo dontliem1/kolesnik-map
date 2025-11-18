@@ -3,13 +3,6 @@
 	
 		
 		<url>
-			<loc>https://example.com/kolesnik-map/projects/vodoprovodnaya-14/</loc>
-			<lastmod>2018-05-01</lastmod>
-		</url>
-	
-	
-		
-		<url>
 			<loc>https://example.com/kolesnik-map/about/</loc>
 			<lastmod>2025-11-18</lastmod>
 		</url>
@@ -60,6 +53,13 @@
 		
 		<url>
 			<loc>https://example.com/kolesnik-map/projects/</loc>
+			<lastmod>2025-11-18</lastmod>
+		</url>
+	
+	
+		
+		<url>
+			<loc>https://example.com/kolesnik-map/projects/vodoprovodnaya-14/</loc>
 			<lastmod>2025-11-18</lastmod>
 		</url>
 	
