@@ -73,7 +73,6 @@ content:
         label: Название
         type: string
         required: true
-        description: "Например: vodoprovodnaya-14"
       - name: draft
         label: Черновик
         type: boolean

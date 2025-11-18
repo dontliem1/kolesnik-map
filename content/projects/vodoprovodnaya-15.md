@@ -1,5 +1,5 @@
 ---
-city: Тюмень
+city: content/cities/tyumen.md
 title: Водопроводная, 15
 url: https://ddkolesnik.com/tumen/vodoprovodnaya-15
 is_big: false
