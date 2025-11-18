@@ -21,7 +21,7 @@ content:
         type: string
         required: true
         description: "Например: vodoprovodnaya-14"
-      - name: string
+      - name: url
         label: Ссылка
         type: string
         description: "Например: https://ddkolesnik.com/projects/vodoprovodnaya-14"
