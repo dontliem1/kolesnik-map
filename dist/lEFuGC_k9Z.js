@@ -1,10 +1,23 @@
 import {createCityMap} from '/kolesnik-map/lib/ymaps.js'
 
 	createCityMap({
-		longitude: '37.617831',
-		latitude: '55.758798',
-		zoom: '12',
+		longitude: '65.567697',
+		latitude: '57.143386',
+		zoom: '13',
 		features: [
+				{
+					id: 'yamskaya-76',
+					type: 'Feature',
+					geometry: {
+						type: 'Point',
+						coordinates: [65.566793, 57.162342],
+					},
+					properties: {
+						status: 'in_progress',
+						size: 'small',
+						title: 'Ямская, 76',
+					},
+				},
 				{
 					id: 'vodoprovodnaya-14',
 					type: 'Feature',
