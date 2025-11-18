@@ -1,7 +1,6 @@
 ---
 city: content/cities/tyumen.md
 title: Водопроводная, 14
-slug: vodoprovodnaya-14
 string: https://ddkolesnik.com/projects/vodoprovodnaya-14
 is_big: true
 draft: false

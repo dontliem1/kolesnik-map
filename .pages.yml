@@ -3,6 +3,7 @@ content:
     label: Проекты
     type: collection
     path: content/projects
+    filename: "{primary}.md"
     view:
       fields: [title, draft, status, city]
     fields:
@@ -11,16 +12,12 @@ content:
         type: reference
         options:
           collection: cities
+          label: "{title}"
       - name: title
         label: Заголовок
         type: string
         required: true
         description: "Например: Водопроводная, 14"
-      - name: slug
-        label: Транслитерация для ссылки
-        type: string
-        required: true
-        description: "Например: vodoprovodnaya-14"
       - name: url
         label: Ссылка
         type: string
@@ -30,7 +27,7 @@ content:
         type: boolean
       - name: cover
         label: Обложка
-        type: image
+        type: string
       - name: draft
         label: Черновик
         type: boolean
@@ -68,6 +65,7 @@ content:
     label: Города
     type: collection
     path: content/cities
+    filename: "{primary}.md"
     view:
       fields: [title, draft, latitude, longitude, zoom]
     fields:
@@ -76,11 +74,6 @@ content:
         type: string
         required: true
         description: "Например: vodoprovodnaya-14"
-      - name: slug
-        label: На английском для ссылки
-        type: string
-        required: true
-        description: "Например: moscow"
       - name: draft
         label: Черновик
         type: boolean
