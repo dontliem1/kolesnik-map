@@ -6642,6 +6642,9 @@ const ZOOM_CONTROL = new YMapControls({position: 'right', orientation: 'vertical
 /** @type {import("@yandex/ymaps3-types").BehaviorType[]} */
 const behaviors = ["drag", "pinchZoom", "dblClick", "magnifier", "oneFingerZoom", "mouseRotate", "mouseTilt", "pinchRotate", "panTilt"];
 
+/** @type {{ marker: any, isPopupVisible: boolean, content: () => Node | null | undefined } | null} */
+let activeMarker = null;
+
 /** @param {'done' | 'in_progress' | 'invest' | undefined} status */
 function statusToColor(status) {
     switch (status) {
@@ -6664,18 +6667,37 @@ function createDefaultMarker({longitude, latitude, title, status, size, id}) {
     const hasPopup = document.getElementById(`project-${id}`);
     const content = () => (/** @type {HTMLTemplateElement | null} */ (document.getElementById(`project-${id}`)))?.content.cloneNode(true);
 
+    let isPopupVisible = false;
+
     const marker = new YMapDefaultMarker(
         {
             color: {day: color, night: color},
             coordinates: center,
             onClick: hasPopup ? () => {
+                // Close the previously active marker's popup if it exists and is different
+                if (activeMarker && activeMarker.marker !== marker && activeMarker.isPopupVisible) {
+                    activeMarker.marker.update({
+                        popup: {
+                            // @ts-ignore
+                            content: activeMarker.content,
+                            show: false
+                        }
+                    });
+                    activeMarker.isPopupVisible = false;
+                }
+
+                // Toggle this marker's popup
+                isPopupVisible = !isPopupVisible;
                 marker.update({
                     popup: {
                         // @ts-ignore
                         content,
-                        show: true
+                        show: isPopupVisible
                     }
                 });
+
+                // Update the active marker reference
+                activeMarker = { marker, isPopupVisible, content };
             } : undefined,
             // @ts-ignore
             popup: hasPopup ? { content } : undefined,
