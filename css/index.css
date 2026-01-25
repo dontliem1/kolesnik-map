@@ -69,14 +69,17 @@ body {
 	outline: 1px solid rgb(38, 38, 38);
 }
 
+.city-map:not(:has(.filter-group--status input[value="done"]:checked)) .marker-cluster--done,
 .city-map:not(:has(.filter-group--status input[value="done"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(38, 38, 38);"]) {
 	display: none;
 }
 
+.city-map:not(:has(.filter-group--status input[value="in_progress"]:checked)) .marker-cluster--in_progress,
 .city-map:not(:has(.filter-group--status input[value="in_progress"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: #9b7863;"]) {
 	display: none;
 }
 
+.city-map:not(:has(.filter-group--status input[value="invest"]:checked)) .marker-cluster--invest,
 .city-map:not(:has(.filter-group--status input[value="invest"]:checked)) .ymaps3x0--marker:has(.ymaps3--default-marker__background[style*="color: rgb(250, 249, 249);"]) {
 	display: none;
 }
@@ -180,7 +183,7 @@ ymaps {
 }
 
 .ymaps3x0--marker:has(.ymaps3--default-marker-point:hover) {
-	z-index: 1000 !important;
+	z-index: 1001 !important;
 }
 
 .ymaps3--default-marker__background {
@@ -208,12 +211,18 @@ ymaps .ymaps3--hint-title {
 	color: rgb(38, 38, 38);
 	font-size: 130%;
 	font-weight: 500;
+	hyphens: auto;
 	line-height: 1;
+	overflow: initial;
+	text-overflow: initial;
 	text-transform: uppercase;
+	word-break: break-word;
 }
 
 ymaps .ymaps3--hint {
-	max-width: 220px;
+	max-width: max-content;
+	width: 200px;
+	white-space: initial;
 }
 
 .ymaps3--small-poi svg {
