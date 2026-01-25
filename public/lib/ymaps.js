@@ -6692,8 +6692,6 @@ function findPopupCenterCoords(
     const popupWorldCoords = pixelsToWorld(popupPixelCoords, zoom);
     const popupLngLatCoords = projection.fromWorldCoordinates({x: popupWorldCoords.x, y: popupWorldCoords.y});
 
-    console.log({markerWorldCoords, markerPixelCoords, popupRect, popupPixelCoords, popupWorldCoords, popupLngLatCoords});
-
     return popupLngLatCoords;
 };
 
@@ -6733,6 +6731,8 @@ function createDefaultMarker({longitude, latitude, title, status, size, id, map}
                 isPopupVisible = !isPopupVisible;
                 marker.update({
                     popup: {
+                        // @ts-ignore
+                        blockBehaviors: true,
                         content,
                         show: isPopupVisible
                     }
@@ -6842,6 +6842,9 @@ function addClusterer(map, status, features) {
         cluster: (coordinates, features) =>
             new YMapMarker(
                 {
+                    hideOutsideViewport: {
+                        extent: 1000
+                    },
                     coordinates,
                     onClick() {
                         const bounds = getBounds(features.map((feature) => feature.geometry.coordinates));
@@ -6881,7 +6884,6 @@ function createCityMap({longitude, latitude, zoom, features}) {
     const map = new YMap(
         document.body,
         {
-            behaviors,
             className: 'city-map',
             location: {center, zoom: zoom ?? 13},
             worldOptions: {cycledX: false, cycledY: false},
