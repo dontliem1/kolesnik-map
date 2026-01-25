@@ -15,6 +15,7 @@ html {
 }
 
 body {
+	background: #e1e3e5;
     font-family: 'Inter', system-ui, sans-serif;
 	margin: 0;
 	height: 100%;
@@ -32,10 +33,6 @@ body {
 }
 
 /** MARK: Map statuses */
-.ymaps3--drawer-control-content {
-	padding: 1em;
-}
-
 .filter-group {
 	border: none;
 	margin: 0;
@@ -92,8 +89,23 @@ body {
 
 /** MARK: Project popup */
 .ymaps3--popup-marker__position-top .ymaps3--popup-marker_container {
+	box-sizing: border-box;
+	max-height: calc(100dvh - 100px);
 	max-width: 21.25rem;
+	overflow-y: auto;
 	padding: 1rem;
+	scrollbar-color: #666 rgba(0,0,0,0);
+	scrollbar-width: thin;
+}
+
+.ymaps3--popup-marker_container::-webkit-scrollbar {
+	width: 8px;
+	background: transparent;
+}
+
+.ymaps3--popup-marker_container::-webkit-scrollbar-thumb {
+	background: #666;
+	border-radius: 4px;
 }
 
 .project-popup__cover {
