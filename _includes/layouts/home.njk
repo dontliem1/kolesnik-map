@@ -3,7 +3,7 @@ layout: layouts/base.njk
 ---
 <h1 class="visually-hidden">{{ title }}</h1>
 {% set statuses = { 'done': 'Готово', 'in_progress': 'Завершён', 'invest': 'Открыт для инвестиций' } %}
-<nav id="map-drawer" class="filters" style="padding: 1em;">
+<nav id="map-drawer" class="filters" style="padding: 1em;" hidden>
 	<fieldset class="filter-group">
 		<legend class="filter-group__title">Город</legend>
 		{% for city in collections.cities %}
