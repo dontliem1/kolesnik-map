@@ -41,6 +41,18 @@ export default function(eleventyConfig) {
 		(strings || []).sort((b, a) => b.localeCompare(a))
 	);
 
+	// Sort collection items by latitude (default: descending/north to south, ascending: south to north)
+	eleventyConfig.addFilter("sortByLatitude", (collection, descending = true) => {
+		if (!Array.isArray(collection) || collection.length === 0) {
+			return [];
+		}
+		return [...collection].sort((a, b) => {
+			const latA = parseFloat(a.data?.latitude) || 0;
+			const latB = parseFloat(b.data?.latitude) || 0;
+			return descending ? latB - latA : latA - latB;
+		});
+	});
+
 	// Check if a path is relative (not starting with / or http)
 	eleventyConfig.addFilter("isRelativePath", (path) => {
 		if (!path) return false;

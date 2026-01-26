@@ -4,17 +4,17 @@ layout: layouts/base.njk
 <h1 class="visually-hidden">{{ title }}</h1>
 {% set statuses = { 'done': 'Готово', 'in_progress': 'Завершён', 'invest': 'Открыт для инвестиций' } %}
 <nav id="map-drawer" class="filters" style="padding: 1em;">
+	<fieldset class="filter-group">
+		<legend class="filter-group__title">Город</legend>
+		{% for city in collections.cities %}
+			<a class="filter-group__link" href="/cities/{{ city.fileSlug }}/?from=drawer">{{ city.data.title }}</a>
+		{% endfor %}
+	</fieldset>
 	<fieldset id="status-filters" class="filter-group filter-group--status">
 		<legend class="filter-group__title">Статус</legend>
 		{% for status, status_name in statuses %}
 			<input type="checkbox" id="status-filter-{{ status }}" name="status-filter" value="{{ status }}" checked>
 			<label for="status-filter-{{ status }}">{{ status_name }}</label><br>
-		{% endfor %}
-	</fieldset>
-	<fieldset class="filter-group">
-		<legend class="filter-group__title">Город</legend>
-		{% for city in collections.cities %}
-			<a class="filter-group__link" href="/cities/{{ city.fileSlug }}/?from=drawer">{{ city.data.title }}</a>
 		{% endfor %}
 	</fieldset>
 </nav>
@@ -37,9 +37,9 @@ layout: layouts/base.njk
 		{{ project.content | safe }}
 		{% if project.data.url %}
 		<a class="project-popup__btn project-popup__btn--{{ project.data.status }}" href="{{ project.data.url }}" target="_blank">
-		{% endif %}
-          {{ 'На страницу объекта' if status === 'done' else 'О проекте' }}
+          {{ 'На страницу объекта' if project.data.status === 'done' else 'О проекте' }}
 		</a>
+		{% endif %}
 		<a
 			class="project-popup__link"
 			title="Прямая ссылка для встраивания"
@@ -64,19 +64,14 @@ layout: layouts/base.njk
 		zoom: '{{ zoom }}',
 		{% endif %}
 		features: [
-			{%- for project in collections.projects %}
+			{%- for project in collections.projects | sortByLatitude %}
 				{
 					id: '{{ project.fileSlug }}',
-					type: 'Feature',
-					geometry: {
-						type: 'Point',
-						coordinates: [{{ project.data.longitude }}, {{ project.data.latitude }}],
-					},
-					properties: {
-						status: '{{ project.data.status }}',
-						size: '{{ "normal" if project.data.is_big else "small" }}',
-						title: '{{ project.data.title }}',
-					},
+					status: '{{ project.data.status }}',
+					size: '{{ "normal" if project.data.is_big else "small" }}',
+					title: '{{ project.data.title }}',
+					longitude: '{{ project.data.longitude }}',
+					latitude: '{{ project.data.latitude }}',
 				},
 			{%- endfor %}
 		],

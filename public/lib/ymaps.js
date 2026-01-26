@@ -2,10 +2,9 @@ await ymaps3.ready;
 
 const {YMap, YMapDefaultSchemeLayer, YMapControls, YMapMarker, YMapDefaultFeaturesLayer} = ymaps3;
 
-ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', ['@yandex/ymaps3-default-ui-theme@latest', '@yandex/ymaps3-clusterer@latest', '@yandex/ymaps3-drawer-control@latest', '@yandex/ymaps3-world-utils@latest']);
+ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', ['@yandex/ymaps3-default-ui-theme@latest', '@yandex/ymaps3-drawer-control@latest', '@yandex/ymaps3-world-utils@latest']);
 
 const {YMapZoomControl, YMapDefaultMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
-const {YMapClusterer, clusterByGrid} = await ymaps3.import('@yandex/ymaps3-clusterer');
 const {YMapDrawerControl} = await ymaps3.import('@yandex/ymaps3-drawer-control');
 // @ts-expect-error
 const worldUtils = await ymaps3.import('@yandex/ymaps3-world-utils');
@@ -6791,78 +6790,6 @@ function createProjectMap({longitude, latitude, title, status, id}) {
     return map;
 }
 
-function circle(count, status) {
-    const circle = document.createElement('div');
-    circle.classList.add('marker-cluster', `marker-cluster--${status}`);
-    circle.innerText = count;
-
-    return circle;
-}
-
-/**
- * @param {import("@yandex/ymaps3-types").LngLat[]} coordinates
- * @returns {import("@yandex/ymaps3-types").LngLatBounds}
- */
-function getBounds(coordinates) {
-    const OFFSET = 0.001;
-    let minLat = Infinity,
-        minLng = Infinity;
-    let maxLat = -Infinity,
-        maxLng = -Infinity;
-
-    for (const coords of coordinates) {
-        const lat = coords[1];
-        const lng = coords[0];
-
-        if (lat < minLat) minLat = lat;
-        if (lat > maxLat) maxLat = lat;
-        if (lng < minLng) minLng = lng;
-        if (lng > maxLng) maxLng = lng;
-    }
-
-    return [
-        [minLng - OFFSET, minLat - OFFSET],
-        [maxLng + OFFSET, maxLat + OFFSET]
-    ];
-}
-
-function addClusterer(map, status, features) {
-    return map.addChild(new YMapClusterer({
-        method: clusterByGrid({gridSize: 64}),
-        features,
-        marker: (/** @type {import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest', size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps, title?: string } }} */ feature) => createDefaultMarker({
-            longitude: feature.geometry.coordinates[0],
-            latitude: feature.geometry.coordinates[1],
-            title: feature.properties?.title,
-            status: feature.properties?.status,
-            size: feature.properties?.size,
-            id: feature.id,
-            map,
-        }),
-        cluster: (coordinates, features) =>
-            new YMapMarker(
-                {
-                    hideOutsideViewport: {
-                        extent: 1000
-                    },
-                    coordinates,
-                    onClick() {
-                        const bounds = getBounds(features.map((feature) => feature.geometry.coordinates));
-                        map.update({
-                            location: {
-                                bounds,
-                                duration: 300,
-                                easing: 'ease-out',
-                            },
-                        });
-                    }
-                },
-                // @ts-ignore
-                circle(features.length, status).cloneNode(true)
-            ),
-    }));
-}
-
 const drawerControl = new YMapDrawerControl({
     position: 'left',
     open: new URLSearchParams(window.location.search).get('from') === 'drawer',
@@ -6875,7 +6802,7 @@ const drawerControl = new YMapDrawerControl({
 });
 
 /**
- * @param {{ longitude?: number, latitude?: number, zoom?: number, features: import("@yandex/ymaps3-clusterer").Feature[] }} params
+ * @param {{ longitude?: number, latitude?: number, zoom?: number, features: {longitude: number; latitude: number; title?: string; status?: "done" | "in_progress" | "invest"; size?: import("@yandex/ymaps3-default-ui-theme").MarkerSizeProps; id: string; map?: import("@yandex/ymaps3-types").YMap;}[] }} params
  */
 function createCityMap({longitude, latitude, zoom, features}) {
     /** @type {import("@yandex/ymaps3-types").LngLat} */
@@ -6897,14 +6824,8 @@ function createCityMap({longitude, latitude, zoom, features}) {
         ]
     );
 
-    const groupedFeatures = features.reduce(function groupByStatus(/** @type {Record<'done' | 'in_progress' | 'invest', (import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest' } })[]>} */ acc, /** @type {import("@yandex/ymaps3-clusterer").Feature & { properties?: { status?: 'done' | 'in_progress' | 'invest' } }} */ feature) {
-        acc[feature.properties?.status ?? 'invest'].push(feature);
-
-        return acc;
-    }, {done: [], in_progress: [], invest: []});
-
-    for (const status in groupedFeatures) {
-        addClusterer(map, status, groupedFeatures[status]);
+    for (const feature of features) {
+        map.addChild(createDefaultMarker({...feature, map}));
     }
 
     return map;
