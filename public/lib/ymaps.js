@@ -1,6 +1,6 @@
 await ymaps3.ready;
 
-const {YMap, YMapDefaultSchemeLayer, YMapControls, YMapMarker, YMapDefaultFeaturesLayer} = ymaps3;
+const {YMap, YMapDefaultSchemeLayer, YMapControls, YMapListener, YMapDefaultFeaturesLayer} = ymaps3;
 
 ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', ['@yandex/ymaps3-default-ui-theme@latest', '@yandex/ymaps3-drawer-control@latest', '@yandex/ymaps3-world-utils@latest']);
 
@@ -6763,6 +6763,19 @@ function createDefaultMarker({longitude, latitude, title, status, size, id, map}
 }
 
 /**
+ * @param {number | undefined} zoom
+ * @param {number | undefined} defaultZoom
+ * @returns {number}
+ */
+function chooseCorrectZoom(zoom, defaultZoom = 13) {
+    const zoomFromUrl = new URLSearchParams(window.location.search).get('zoom');
+    if (zoomFromUrl) {
+        return parseInt(zoomFromUrl);
+    }
+    return zoom ?? defaultZoom;
+}
+
+/**
  * @param {{ longitude: number, latitude: number, title: string, status: 'done' | 'in_progress' | 'invest', id: string }} params
  */
 function createProjectMap({longitude, latitude, title, status, id}) {
@@ -6774,7 +6787,7 @@ function createProjectMap({longitude, latitude, title, status, id}) {
         {
             behaviors,
             className: 'project-map',
-            location: {center, zoom: 15},
+            location: {center, zoom: chooseCorrectZoom(undefined, 15)},
             worldOptions: {cycledX: false, cycledY: false},
             zoomRange: {min: 5, max: 21},
         },
@@ -6792,10 +6805,14 @@ function createProjectMap({longitude, latitude, title, status, id}) {
 
 const drawerControl = new YMapDrawerControl({
     position: 'left',
-    open: new URLSearchParams(window.location.search).get('from') === 'drawer',
+    size: 'large',
+    open: new URLSearchParams(window.location.search).get('drawer') === 'open',
     onOpenChange: (value) => {
         drawerControl.update({open: !value});
-        window.history.replaceState({}, '', window.location.pathname);
+        // @ts-ignore
+        const url = new URL(window.location);
+        url.searchParams.delete('drawer');
+        window.history.replaceState({}, '', url.pathname + url.search + url.hash);
     },
     // @ts-ignore
     content: () => document.getElementById('map-drawer'),
@@ -6812,7 +6829,7 @@ function createCityMap({longitude, latitude, zoom, features}) {
         document.body,
         {
             className: 'city-map',
-            location: {center, zoom: zoom ?? 13},
+            location: {center, zoom: chooseCorrectZoom(zoom)},
             worldOptions: {cycledX: false, cycledY: false},
             zoomRange: {min: 5, max: 21},
         },
@@ -6827,6 +6844,27 @@ function createCityMap({longitude, latitude, zoom, features}) {
     for (const feature of features) {
         map.addChild(createDefaultMarker({...feature, map}));
     }
+
+    let lastUpdateTime = 0;
+    const UPDATE_THROTTLE_MS = 500;
+
+    map.addChild(
+        new YMapListener({
+            onUpdate: ({location}) => {
+                const now = Date.now();
+                if (now - lastUpdateTime < UPDATE_THROTTLE_MS) return;
+                lastUpdateTime = now;
+
+                // @ts-ignore
+                const url = new URL(window.location);
+                const roundedZoom = Math.round(location.zoom);
+                if (roundedZoom !== location.zoom) {
+                    url.searchParams.set('zoom', Math.round(location.zoom).toString());
+                    window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+                }
+            },
+        })
+    );
 
     return map;
 }

@@ -7,7 +7,7 @@ layout: layouts/base.njk
 	<fieldset class="filter-group">
 		<legend class="filter-group__title">Город</legend>
 		{% for city in collections.cities %}
-			<a class="filter-group__link" href="/cities/{{ city.fileSlug }}/?from=drawer">{{ city.data.title }}</a>
+			<a class="filter-group__link" href="/cities/{{ city.fileSlug }}/?drawer=open">{{ city.data.title }}</a>
 		{% endfor %}
 	</fieldset>
 	<fieldset id="status-filters" class="filter-group filter-group--status">
@@ -17,6 +17,22 @@ layout: layouts/base.njk
 			<label for="status-filter-{{ status }}">{{ status_name }}</label><br>
 		{% endfor %}
 	</fieldset>
+	<script>
+		const checkboxes = document.getElementsByName('status-filter');
+		const url = new URL(window.location);
+		const status = url.searchParams.get('status');
+		if (status) {
+			const activeStatuses = status.split(',');
+			for (const checkbox of checkboxes) {
+				checkbox.checked = activeStatuses.includes(checkbox.value);
+			}
+		}
+		document.getElementById('status-filters').addEventListener('change', (event) => {
+			const url = new URL(window.location);
+			url.searchParams.set('status', Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value));
+			window.history.replaceState({}, '', url);
+		});
+	</script>
 </nav>
 {%- for project in collections.projects %}
 	<template class="project-popup" id="project-{{ project.fileSlug }}">
