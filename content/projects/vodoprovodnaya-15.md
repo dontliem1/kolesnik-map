@@ -4,8 +4,8 @@ title: Водопроводная, 15
 url: https://ddkolesnik.com/tumen/vodoprovodnaya-15
 is_big: false
 cover: https://optim.tildacdn.com/stor3438-3037-4438-a165-356432386632/-/format/webp/72691522.jpg
-latitude: 57.157974
-longitude: 65.544919
+latitude: 57.157845
+longitude: 65.544772
 status: done
 ---
 Благоустроенная территория, чистый фасад, высаженные деревья.
