@@ -16,10 +16,10 @@ import {createCityMap} from '/lib/ymaps.js'
 
 	createCityMap({
 		
-		longitude: '59.943267',
+		longitude: '60.597474',
 		
 		
-		latitude: '56.905819',
+		latitude: '56.838011',
 		
 		
 		zoom: '13',
@@ -360,14 +360,6 @@ import {createCityMap} from '/lib/ymaps.js'
 					title: 'Моторостроителей, 5/7',
 					longitude: '65.605861',
 					latitude: '57.106116',
-				},
-				{
-					id: 'moskovskij-trakt-1201',
-					status: 'invest',
-					size: 'normal',
-					title: 'Московский тракт, 120/1',
-					longitude: '65',
-					latitude: '57',
 				},
 				{
 					id: 'vajnera-15-1',
