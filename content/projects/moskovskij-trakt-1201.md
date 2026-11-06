@@ -1,6 +1,6 @@
 ---
 city: content/cities/tyumen.md
-title: Московский тракт, 120/1
+title: Московский тракт, 120к1
 url: https://ddkolesnik.com/m120-1
 is_big: true
 cover: https://static.tildacdn.com/tila6565-6563-4864-a233-643733313433/6_1.png
