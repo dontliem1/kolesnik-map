@@ -16,7 +16,13 @@ import {createCityMap} from '/lib/ymaps.js'
 
 	createCityMap({
 		
+		longitude: '60.597474',
 		
+		
+		latitude: '56.838011',
+		
+		
+		zoom: '13',
 		
 		features: [
 				{
@@ -234,6 +240,14 @@ import {createCityMap} from '/lib/ymaps.js'
 					title: 'Московский тракт, 132',
 					longitude: '65.488118',
 					latitude: '57.134975',
+				},
+				{
+					id: 'moskovskij-trakt-1201',
+					status: 'invest',
+					size: 'normal',
+					title: 'Московский тракт, 120/1',
+					longitude: '65.493454',
+					latitude: '57.134247',
 				},
 				{
 					id: 'energetikov-62a copy',
